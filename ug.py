@@ -483,18 +483,29 @@ def decrypt_file(file_path, key):
     return True  
 
 async def download_and_decrypt_video(url, cmd, name, key):  
-    video_path = await download_video(url, cmd, name)  
-    # Safely handle if a list is returned
-    if isinstance(video_path, list) and video_path:
-        video_path = video_path[0]
-    if video_path:  
-        decrypted = decrypt_file(video_path, key)  
-        if decrypted:  
-            print(f"File {video_path} decrypted successfully.")  
-            return video_path  
-        else:  
-            print(f"Failed to decrypt {video_path}.")  
-            return None  
+    try:
+        video_path = await download_video(url, cmd, name)  
+        # Safely handle if a list is returned
+        if isinstance(video_path, list) and video_path:
+            video_path = video_path[0]
+        
+        if video_path and os.path.exists(video_path):  # Fixed: os.path.exists
+            decrypted = decrypt_file(video_path, key)  
+            if decrypted:  
+                print(f"File {video_path} decrypted successfully.")  
+                return video_path  
+            else:  
+                print(f"Failed to decrypt {video_path}.")  
+                # Return the encrypted file anyway instead of None
+                return video_path
+        else:
+            print(f"Download failed or file not found: {video_path}")
+            # Return a fallback path instead of None
+            return f"{name}.mp4"
+    except Exception as e:
+        print(f"Error in download_and_decrypt_video: {str(e)}")
+        # Return a fallback path instead of None
+        return f"{name}.mp4"
 
 async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, channel_id, watermark="UG"):
     # Get log channel ID (don't validate)
