@@ -105,7 +105,7 @@ def parse_vid_info(info):
                 if "RESOLUTION" not in i[2] and i[2] not in temp and "audio" not in i[2]:
                     temp.append(i[2])
                     new_info.append((i[0], i[2]))
-            except:
+            except Exception as e:
                 pass
     return new_info
 
@@ -132,7 +132,7 @@ def vid_info(info):
                     
                     new_info.update({f'{i[2]}':f'{i[0]}'})
 
-            except:
+            except Exception as e:
                 pass
     return new_info
 
@@ -461,7 +461,7 @@ async def send_doc(bot: Client, m: Message, cc, ka, cc1, prog, count, name, chan
     if log_channel:
         try:
             await bot.send_document(log_channel, sent_doc.document.file_id, caption=f"#Document\n\nUser: {m.from_user.mention}\nFile: {name}\n\n{cc1}")
-        except:
+        except Exception as e:
             pass  # Ignore any errors when forwarding to log channel
     
     count+=1
@@ -556,7 +556,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                             caption=f"**User**: {m.from_user.mention}\n{cc}",
                             supports_streaming=True
                         )
-                    except:
+                    except Exception as e:
                         pass  # Ignore log channel errors
                     
             except Exception as e:
@@ -579,7 +579,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                                 sent_doc.document.file_id,
                                 caption=f"**User**: {m.from_user.mention}\n{cc}",
                             )
-                        except:
+                        except Exception as e:
                             pass  # Ignore log channel errors
                 except Exception as e:
                     print(f"Error sending document: {str(e)}")
