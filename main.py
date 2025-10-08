@@ -987,18 +987,23 @@ async def txt_handler(bot: Client, m: Message):
                     Show = f"<i><b>Video APPX Encrypted Downloading</b></i>\n<blockquote><b>{str(count).zfill(3)}) {name1}</b></blockquote>"
                     prog = await bot.send_message(channel_id, Show, disable_web_page_preview=True)
                     try:
-
                         res_file = await helper.download_and_decrypt_video(url, cmd, name, appxkey)  
                         filename = res_file  
                         await prog.delete(True) 
-                        if os.path.exists(filename):
+                        if filename and os.path.exists(filename):
                             await helper.send_vid(bot, m, cc, filename, thumb, name, prog, channel_id, watermark=watermark)
                             count += 1
                         else:
-                            await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True)
+                            await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: File not found after download</b></i></blockquote>', disable_web_page_preview=True)
                             failed_count += 1
                             count += 1
                             continue
+            
+                    except Exception as e:  # This line must have 'as e'
+                        await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True)
+                        count += 1
+                        failed_count += 1
+                        continue
                         
                         
                     except Exception as e:
