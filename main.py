@@ -546,7 +546,7 @@ async def txt_handler(bot: Client, m: Message):
             res = "1920x1080" 
         else: 
             res = "UN"
-    except Exception:
+    except Exception as e:
             res = "UN"
     chat_id = editable.chat.id
     timeout_duration = 3 if auto_flags.get(chat_id) else 20
@@ -1116,7 +1116,7 @@ async def text_handler(bot: Client, m: Message):
             res = "1920x1080" 
         else: 
             res = "UN"
-    except Exception:
+    except Exception as e:
             res = "UN"
           
    
