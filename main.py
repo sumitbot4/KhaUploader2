@@ -292,7 +292,7 @@ async def restart_handler(_, m):
     os.execl(sys.executable, sys.executable, *sys.argv)
         
 
-@bot.on_message(filters.command("start") & (filters.private | filters.channel))
+@bot.on_message(filters.command("Thik") & (filters.private | filters.channel))
 async def start(bot: Client, m: Message):
     try:
         if m.chat.type == "channel":
